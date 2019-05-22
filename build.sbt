@@ -1,12 +1,13 @@
 import com.typesafe.sbt.SbtScalariform.ScalariformKeys
-import scalariform.formatter.preferences._
+import _root_.scalariform.formatter.preferences._
 
 import scala.sys.process._
 import sbt.io.Using
 
 lazy val commonSettings = inConfig(Test)(Defaults.testSettings) ++
   Seq(
-    organization := "org.scalariform",
+//    organization := "org.scalariform",
+    organization := "de.sciss",
     sonatypeProfileName := organization.value,
     scalaVersion := crossScalaVersions.value.head,
     crossScalaVersions := Seq(
@@ -60,6 +61,13 @@ def publishSettings(projectName: String) = Seq(
   buildInfoKeys := Seq[BuildInfoKey](version),
   buildInfoPackage := projectName,
   publishTo := getPublishToRepo.value
+)
+
+def notPublished = Seq(
+  publishLocal    := {},
+  publish         := {},
+  publishArtifact := false,
+  publishTo       := Some(Resolver.file("Unused transient repository", file("target/unusedrepo")))
 )
 
 def getPublishToRepo = Def.setting {
@@ -129,7 +137,8 @@ lazy val scalariform = (project
 lazy val cli = (project
   enablePlugins(BuildInfoPlugin)
   settings(subprojectSettings("cli"))
-  settings(publishSettings("cli"))
+//  settings(publishSettings("cli"))
+  settings(notPublished)
   settings(
     libraryDependencies += "commons-io" % "commons-io" % "1.4",
     mainClass in (Compile, packageBin) := Some("scalariform.commandline.Main"),
@@ -144,7 +153,8 @@ lazy val cli = (project
 )
 
 lazy val root = (project in file(".")
-  settings(publishSettings("root"))
+//  settings(publishSettings("root"))
+  settings(notPublished)
   settings(commonSettings)
   aggregate(scalariform, cli)
 )

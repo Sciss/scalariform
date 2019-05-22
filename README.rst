@@ -1,3 +1,9 @@
+__Note:__ This is a quick fork, publishing with new organization `"de.sciss"` in order to have Scala 2.13 support. The artifact:
+
+    "de.sciss" %% "scalariform" % "0.2.8"
+
+Below is the original README:
+
 Scalariform
 ===========
 
